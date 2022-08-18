@@ -7,7 +7,6 @@ require("dotenv").config();
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const HOST = "localhost";
 const { API_KEY_VALUE } = process.env;
 const API_URL = `https://www.googleapis.com/books/v1/volumes?:keyes&key=${API_KEY_VALUE}`;
 
@@ -25,6 +24,4 @@ app.use("/books", async (req, res) => {
   }
 });
 
-app.listen(PORT, HOST, () => {
-  console.log(`Starting Proxy at ${HOST}:${PORT}`);
-});
+app.listen(PORT);
