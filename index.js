@@ -1,14 +1,24 @@
 const express = require("express");
 const morgan = require("morgan");
 const fetch = require("node-fetch");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const slowDown = require("express-slow-down");
 require("dotenv").config();
 
 const app = express();
 
+app.enable("trust proxy");
+
 const PORT = process.env.PORT || 3000;
 const { API_KEY_VALUE } = process.env;
 const API_URL = `https://www.googleapis.com/books/v1/volumes?:keyes&key=${API_KEY_VALUE}`;
+
+const speedLimiter = slowDown({
+  windowMs: 15 * 60 * 1000,
+  delayAfter: 100, 
+  delayMs: 500
+});
+
+app.use(speedLimiter);
 
 app.use(morgan("dev"));
 
